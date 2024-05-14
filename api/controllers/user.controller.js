@@ -16,7 +16,7 @@ export const test = (req, res) => {
             //agar user password update krna chahta hai
 
             if(req.body.password){
-                req.body.password = bcryptjs.hashSync(req.body.password,10);
+                req.body.password = bcrypt.hashSync(req.body.password,10);
             }
 
             const updatedUser = await User.findByIdAndUpdate(req.params.id,{
