@@ -10,7 +10,10 @@ import {
 } from 'firebase/storage';
 import {app} from "../firebase.js";
 
-import { updateUserStart,updateUserFailure,updateUserSuccess,deleteUserFailure,deleteUserStart,deleteUserSuccess } from "../redux/user/userSlice.js";
+import { updateUserStart,
+  updateUserFailure,updateUserSuccess,deleteUserFailure,
+  deleteUserStart,deleteUserSuccess,
+  signOutUserFailure,signOutUserStart,signOutUserSuccess } from "../redux/user/userSlice.js";
 import { useDispatch } from "react-redux";
 
 export default function Profile() {
@@ -116,6 +119,26 @@ export default function Profile() {
         
       }
   }
+
+  const handleSignOut = async()=>{
+      try {
+        dispatch(signOutUserStart());
+        const res = await fetch('api/auth/signout');
+
+        const data = await res.json();
+
+        if(data.success === false){
+          dispatch(signOutUserFailure(data.message));
+          return;
+        }
+
+        dispatch(signOutUserSuccess(data));
+        setUpdateSuccess(false);
+
+      } catch (error) {
+        dispatch(signOutUserFailure(error.message));
+      }
+  }
   
   return (
     <div className="p-3 max-w-lg mx-auto">
@@ -144,7 +167,7 @@ export default function Profile() {
         <button onClick={handleDeleteUser} className="text-red-800 cursor-pointer ">
           Delete account
         </button>
-        <button className="text-red-800 p-3 cursor-pointer ">
+        <button onClick={handleSignOut} className="text-red-800 p-3 cursor-pointer ">
           Sign out
         </button>
       </div>
