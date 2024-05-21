@@ -14,4 +14,4 @@ apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
 };
 
 // Initialize Firebase
-export const app = initializeApp(firebaseConfig);
+export   const app = initializeApp(firebaseConfig);
